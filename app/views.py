@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import json
 
 from .models import Book
+from .serializers import BookSerializer
 
 # Create your views here.
 
@@ -22,3 +24,14 @@ def saveBook(request):
         return HttpResponse("true")
     except:
         return HttpResponse("false")
+
+
+def getAllBooks(request):
+    books = Book.objects.all()
+    booksList = list()
+
+    for b in books:
+        bookserializer = BookSerializer(b)
+        booksList.append(bookserializer.data)
+
+    return HttpResponse(json.dumps(booksList))

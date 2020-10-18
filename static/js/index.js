@@ -21,3 +21,43 @@ function saveBook() {
     xhttp.open("GET", url, true);
     xhttp.send();
 }
+
+function showAllBooks() {
+    var xhttp = new XMLHttpRequest();
+
+    url = "/getAllBooks";
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var booksList = eval(xhttp.responseText);
+            var div = document.getElementById("showBooksDiv");
+            div.innerHTML = "";
+
+            var table = document.createElement("table");
+
+            var row = table.insertRow(0);
+            var name = row.insertCell(0);
+            var price = row.insertCell(1);
+            var pages = row.insertCell(2);
+
+            name.innerHTML = "Name";
+            price.innerHTML = "Price";
+            pages.innerHTML = "Number of Pages";
+
+            for (var i = 0; i < booksList.length; i++) {
+                var row = table.insertRow(i + 1);
+                var name = row.insertCell(0);
+                var price = row.insertCell(1);
+                var pages = row.insertCell(2);
+
+                name.innerHTML = booksList[i].name;
+                price.innerHTML = booksList[i].price;
+                pages.innerHTML = booksList[i].pages;
+            }
+            div.appendChild(table);
+            table.className = "table text-center table-striped";
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
