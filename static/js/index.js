@@ -15,7 +15,12 @@ function saveBook() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            alert(xhttp.responseText);
+            if (xhttp.responseText == "true") {
+                alert("Book Saved");
+                document.getElementById("book_name").value = "";
+                document.getElementById("book_price").value = "";
+                document.getElementById("book_pages").value = "";
+            }
         }
     };
     xhttp.open("GET", url, true);
