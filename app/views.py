@@ -35,3 +35,12 @@ def getAllBooks(request):
         booksList.append(bookserializer.data)
 
     return HttpResponse(json.dumps(booksList))
+
+
+def deleteBook(request):
+    try:
+        book = Book.objects.get(id=request.GET['id'])
+        book.delete()
+        return HttpResponse('true')
+    except:
+        return HttpResponse('false')

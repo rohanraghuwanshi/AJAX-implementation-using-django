@@ -44,20 +44,46 @@ function showAllBooks() {
             var name = row.insertCell(0);
             var price = row.insertCell(1);
             var pages = row.insertCell(2);
+            var clicktodelete = row.insertCell(3);
 
             name.innerHTML = "Name";
             price.innerHTML = "Price";
             pages.innerHTML = "Number of Pages";
+            clicktodelete.innerHTML = "Click to Delete";
 
             for (var i = 0; i < booksList.length; i++) {
                 var row = table.insertRow(i + 1);
                 var name = row.insertCell(0);
                 var price = row.insertCell(1);
                 var pages = row.insertCell(2);
+                var deleteButton = row.insertCell(3);
 
                 name.innerHTML = booksList[i].name;
                 price.innerHTML = booksList[i].price;
                 pages.innerHTML = booksList[i].pages;
+                deleteButton.innerHTML = "&times";
+                deleteButton.className = "text-danger text-center deleteButton";
+                deleteButton.style.fontSize = "20px";
+                deleteButton.style.cursor = "pointer";
+                deleteButton.id = booksList[i].id;
+
+                deleteButton.onclick = function () {
+                    var obj = this;
+                    var id = this.id;
+
+                    var url = "/delete-book?id=" + id;
+
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (req.responseText == "true") {
+                                table.deleteRow(obj.parentNode.rowIndex);
+                            }
+                        }
+                    };
+                    req.open("GET", url, true);
+                    req.send();
+                };
             }
             div.appendChild(table);
             table.className = "table text-center table-striped";
